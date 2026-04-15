@@ -295,15 +295,16 @@ useEffect(() => {
         {/* Messages */}
         <div style={styles.messagesArea}>
           <div style={styles.dateLabel}>今日</div>
-<div
-  key={idx}
-  data-role={msg.role}
-  style={
-    msg.role === "user" ? styles.userBubbleRow : styles.botBubbleRow
-  }
->
+<div style={styles.dateLabel}>今日</div>
+
           {messages.map((msg, idx) => (
-          
+            <div
+              key={idx}
+              data-role={msg.role}
+              style={
+                msg.role === "user" ? styles.userBubbleRow : styles.botBubbleRow
+              }
+            >
               <div
                 style={
                   msg.role === "user" ? styles.userBubble : styles.botBubble
