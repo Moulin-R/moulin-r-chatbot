@@ -165,7 +165,11 @@ function MoulinRChatbot() {
 
 useEffect(() => {
     if (messages.length > 1) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      const botBubbles = document.querySelectorAll('[data-role="assistant"]');
+      const lastBot = botBubbles[botBubbles.length - 1];
+      if (lastBot) {
+        lastBot.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
   }, [messages]);
 
@@ -291,14 +295,15 @@ useEffect(() => {
         {/* Messages */}
         <div style={styles.messagesArea}>
           <div style={styles.dateLabel}>今日</div>
-
+<div
+  key={idx}
+  data-role={msg.role}
+  style={
+    msg.role === "user" ? styles.userBubbleRow : styles.botBubbleRow
+  }
+>
           {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              style={
-                msg.role === "user" ? styles.userBubbleRow : styles.botBubbleRow
-              }
-            >
+          
               <div
                 style={
                   msg.role === "user" ? styles.userBubble : styles.botBubble
