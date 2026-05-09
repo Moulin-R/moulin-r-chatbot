@@ -244,7 +244,29 @@ useEffect(() => {
       sendMessage(input);
     }
   };
-
+const renderLinks = (text) => {
+    const mdRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = [];
+    let last = 0;
+    let match;
+    const temp = text;
+    while ((match = mdRegex.exec(temp)) !== null) {
+      if (match.index > last) parts.push(temp.slice(last, match.index));
+      parts.push(<a key={match.index} href={match[2]} target="_blank" rel="noopener noreferrer" style={{color:"#8b6f4e",textDecoration:"underline"}}>{match[1]}</a>);
+      last = match.index + match[0].length;
+    }
+    if (last === 0) {
+      let m2;
+      while ((m2 = urlRegex.exec(temp)) !== null) {
+        if (m2.index > last) parts.push(temp.slice(last, m2.index));
+        parts.push(<a key={m2.index} href={m2[0]} target="_blank" rel="noopener noreferrer" style={{color:"#8b6f4e",textDecoration:"underline"}}>{m2[0]}</a>);
+        last = m2.index + m2[0].length;
+      }
+    }
+    if (last < temp.length) parts.push(temp.slice(last));
+    return parts.length > 0 ? parts : text;
+  };
  const renderContent = (text) => {
     const parts = text.split("\n");
     return parts.map((line, i) => (
