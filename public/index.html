@@ -283,7 +283,7 @@ const renderLinks = (text) => {
       <span style={styles.botBubbleText}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
           <RenaAvatar size={42} />
-          <span>{parts[0]}</span>
+         <span>{renderLinks(parts[0])}</span>
         </span>
         {parts.length > 1 && <br />}
         {parts.slice(1).map((line, i) => (
