@@ -287,11 +287,11 @@ const renderLinks = (text) => {
         </span>
         {parts.length > 1 && <br />}
         {parts.slice(1).map((line, i) => (
-          <span key={i}>
-            {line}
-            {i < parts.length - 2 && <br />}
-          </span>
-        ))}
+  <span key={i}>
+    {renderLinks(line)}
+    {i < parts.length - 2 && <br />}
+  </span>
+))}
       </span>
     );
   };
