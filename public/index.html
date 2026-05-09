@@ -245,11 +245,11 @@ useEffect(() => {
     }
   };
 
-  const renderContent = (text) => {
+ const renderContent = (text) => {
     const parts = text.split("\n");
     return parts.map((line, i) => (
       <span key={i}>
-        {line}
+        {renderLinks(line)}
         {i < parts.length - 1 && <br />}
       </span>
     ));
