@@ -15,7 +15,12 @@
 </head>
 <body style="margin:0;padding:0;">
   <div id="root"></div>
-  <script type="text/babel" data-presets="react">
+  <script>
+    window.Babel.registerPreset('custom-react-classic', {
+      presets: [[window.Babel.availablePresets['react'], { runtime: 'classic' }]],
+    });
+  </script>
+  <script type="text/babel" data-presets="custom-react-classic">
 const { useState, useRef, useEffect } = React;
 const MAX_TURNS = 10;        // ← 回数を変えたい場合ここ
 const MAX_INPUT_LENGTH = 200; // ← 文字数を変えたい場合ここ
