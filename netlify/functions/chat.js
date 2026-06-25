@@ -34,7 +34,7 @@ const appendToSheet = async (userMessage, assistantReply, turnNumber, sessionId)
     const accessToken = tokenData.access_token;
 
     const sheetRes = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/log!A:E:append?valueInputOption=USER_ENTERED`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/log!A1:append?valueInputOption=USER_ENTERED`,
       {
         method: "POST",
         headers: {
