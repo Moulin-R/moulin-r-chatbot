@@ -106,7 +106,7 @@ exports.handler = async (event) => {
         .map((b) => b.text)
         .join("") || "";
 
-    sawait appendToSheet(userMessage, assistantReply, turnNumber, sessionId);
+    await appendToSheet(userMessage, assistantReply, turnNumber, sessionId);
 
     return {
       statusCode: response.status,
