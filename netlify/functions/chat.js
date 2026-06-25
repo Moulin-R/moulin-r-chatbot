@@ -33,7 +33,7 @@ const appendToSheet = async (userMessage, assistantReply, turnNumber, sessionId)
     const tokenData = await tokenRes.json();
     const accessToken = tokenData.access_token;
 
-    await fetch(
+    const sheetRes = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/log!A:E:append?valueInputOption=USER_ENTERED`,
       {
         method: "POST",
@@ -46,6 +46,9 @@ const appendToSheet = async (userMessage, assistantReply, turnNumber, sessionId)
         }),
       }
     );
+    const sheetData = await sheetRes.json();
+    console.log("Sheets response:", JSON.stringify(sheetData));
+
   } catch (e) {
     console.error("Sheets error:", e);
   }
