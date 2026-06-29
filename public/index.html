@@ -9,17 +9,12 @@
 <link rel="apple-touch-icon" href="/rena-icon-192.png">
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" onload="window.Babel.registerPreset('custom-react-classic',{presets:[[window.Babel.availablePresets['react'],{runtime:'classic'}]]})"></script>
 </head>
 <body style="margin:0;padding:0;">
   <div id="root"></div>
-  <script>
-    window.Babel.registerPreset('custom-react-classic', {
-      presets: [[window.Babel.availablePresets['react'], { runtime: 'classic' }]],
-    });
-  </script>
   <script type="text/babel" data-presets="custom-react-classic">
 const { useState, useRef, useEffect } = React;
 const MAX_TURNS = 10;        // ← 回数を変えたい場合ここ
@@ -63,14 +58,40 @@ const SYSTEM_PROMPT = `あなたは「ムーランR（Moulin-R）」の美容カ
 ・予約リンクは必ず [こちらからご予約いただけます♪](https://1cs.jp/mr/x) のようにMarkdownリンク形式で出力すること
 
 【サロンの取り扱いメニュー・サービス】
-・カット：￥6,600（施術時間約80分・シャンプー＋2種の本格美髪マッサージつき）
-・前髪カット：￥2,200
-・眉カット：￥2,200（ヘアメニューと同時で半額）。眉カラーも対応可能
-・リタッチカラー（根元の白髪）：￥4,400
-・MRカラートリートメント【シングル】：ショート￥8,800 / ミディ￥11,000 / ロング￥13,200
-・縮毛矯正（MR矯正ストレート）：ショート￥19,800 / ミディ￥24,200 / ロング￥26,400
-・ヘッドスパ（S5アンチエイジングスパ）：￥3,300
-・シャンプー＆トリートメント：お一人ひとりの地肌・髪質・ヘアデザインに応じて20種類の組み合わせで施術。ご希望に応じて販売も可能
+
+＜カット系＞
+・カット：￥6,600（税込）／所要時間90分
+　シャンプー・マッサージ・ブロー込み。シャンプー前の頭皮マッサージで頭皮をやわらかく整え、スチームタオルの心地よさと、頭・首・肩・腰までのマッサージで癒しの時間をお楽しみいただけます。
+
+・クイックカット：￥5,500（税込）／所要時間60分
+　シャンプー・マッサージなし。カット＆ブローのショートコース。お時間のない方や、病中・病後などシャンプー・マッサージが難しい場合にも対応。
+
+・前髪カット：￥2,200（税込）／他のヘアメニューと同時の場合￥1,100（税込）
+　前髪の長さや形の調整。エステの前後に気軽に取り入れていただける人気メニュー。
+
+・学生カット（小学生〜高校生）：￥4,455（税込）
+・子供カット（0歳〜未就学児）：￥3,960（税込）
+　何歳からでもカット対応可。一人で椅子に座れない場合はお母様に抱っこしていただいた状態でカット。
+
+・メンズスタイリッシュコース：￥7,700（税込）／所要時間90分
+　カット（シャンプー・マッサージ付）＋眉カットのセット。清潔感のある印象に仕上がるメンズ人気コース。（通常カット￥6,600＋眉カット￥2,200をセット価格で）
+
+＜眉・顔まわり＞
+・眉カット：￥2,200（税込）／ヘアメニューと同時の場合￥1,100（税込）
+・眉カラー：白髪の出てきた眉や、髪色・メイクに合わせたカラーの似合わせに。印象が劇的にイメージアップ。
+
+＜カラー系＞
+・リタッチカラー（根元の白髪）：￥4,400（税込）
+・MRカラートリートメント【シングル】：ショート￥8,800 / ミディ￥11,000 / ロング￥13,200（税込）
+
+＜縮毛矯正＞
+・MR矯正ストレート：ショート￥19,800 / ミディ￥24,200 / ロング￥26,400（税込）
+
+＜ヘッドスパ・トリートメント＞
+・ヘッドスパ（S5アンチエイジングスパ）：￥3,300（税込）
+・シャンプー＆トリートメント：地肌・髪質・ヘアデザインに応じて20種類の組み合わせで施術。販売も可能。
+
+＜その他＞
 ・かつら・ヘアピース：カットやカラーリングもご希望に応じて対応可能
 
 【重要】
