@@ -198,6 +198,9 @@ const RenaAvatar = ({ size = 40 }) => {
 };
 
 function MoulinRChatbot() {
+  const [guestName, setGuestName] = useState("");
+  const [nameInput, setNameInput] = useState("");
+  const [showForm, setShowForm] = useState(true);
   const [messages, setMessages] = useState([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -207,7 +210,17 @@ function MoulinRChatbot() {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-useEffect(() => {
+const handleStart = () => {
+    const name = nameInput.trim();
+    setGuestName(name);
+    const greeting = name
+      ? `はじめまして、${name}様♪ ムーランRの美容カウンセラー Rena（レナ）です✨\n\nお髪のこと、頭皮のこと、美容のこと…なんでもお気軽にご相談くださいね。\n\n最近、気になっていることはありますか？`
+      : "はじめまして、ムーランRの美容カウンセラー Rena（レナ）です✨\n\nお髪のこと、頭皮のこと、美容のこと…なんでもお気軽にご相談くださいね。\n\n最近、気になっていることはありますか？";
+    setMessages([{ role: "assistant", content: greeting }]);
+    setShowForm(false);
+  };
+
+  useEffect(() => {
     if (messages.length > 1) {
       const botBubbles = document.querySelectorAll('[data-role="assistant"]');
       const lastBot = botBubbles[botBubbles.length - 1];
@@ -335,6 +348,61 @@ const renderLinks = (text) => {
 
   const messageCount = messages.filter((m) => m.role === "user").length;
   const showBooking = messageCount >= 2;
+
+  if (showForm) {
+    return (
+      <div style={styles.wrapper}>
+        <div style={styles.container}>
+          <div style={styles.header}>
+            <div style={styles.headerInner}>
+              <div style={styles.logoArea}>
+                <div style={styles.logoCircle}><span style={styles.logoText}>MR</span></div>
+                <div>
+                  <div style={styles.salonName}>Moulin-R</div>
+                  <div style={styles.salonSub}>Beauty Counselor — Rena</div>
+                </div>
+              </div>
+              <div style={styles.statusDot}>
+                <span style={styles.dot}></span>
+                <span style={styles.statusText}>Online</span>
+              </div>
+            </div>
+          </div>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 24px", background: "linear-gradient(180deg, #fffcf8 0%, #faf6f1 100%)" }}>
+            <div style={{ marginBottom: "24px", textAlign: "center" }}>
+              <RenaAvatar size={72} />
+            </div>
+            <p style={{ fontSize: "15px", color: "#3d3028", fontWeight: "400", textAlign: "center", lineHeight: "1.8", marginBottom: "28px" }}>
+              はじめまして♪<br />
+              よろしければお名前を教えていただけますか？<br />
+              <span style={{ fontSize: "13px", color: "#a08878" }}>※入力しなくてもご利用いただけます</span>
+            </p>
+            <div style={{ width: "100%", maxWidth: "320px" }}>
+              <input
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleStart(); }}
+                placeholder="お名前（例：山田 花子）"
+                maxLength={20}
+                style={{ width: "100%", padding: "12px 16px", borderRadius: "14px", border: "1px solid rgba(200,180,160,0.4)", background: "#faf6f1", fontSize: "15px", fontFamily: "'Noto Sans JP', sans-serif", color: "#3d3028", outline: "none", boxSizing: "border-box", marginBottom: "16px" }}
+                autoFocus
+              />
+              <button
+                onClick={handleStart}
+                style={{ width: "100%", padding: "13px", borderRadius: "24px", background: "linear-gradient(135deg, #5c4a3a 0%, #3d3028 100%)", color: "#f5ede4", border: "none", fontSize: "15px", fontFamily: "'Noto Sans JP', sans-serif", fontWeight: "500", cursor: "pointer", letterSpacing: "1px", boxShadow: "0 3px 12px rgba(60,48,40,0.2)" }}
+              >
+                Renaに相談する ✨
+              </button>
+            </div>
+          </div>
+          <div style={{ padding: "10px 16px 14px", background: "#fffcf8", borderTop: "1px solid rgba(200,180,160,0.15)", textAlign: "center" }}>
+            <div style={styles.footerNote}>Moulin-R Beauty Counselor powered by AI</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.wrapper}>
