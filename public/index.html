@@ -209,7 +209,7 @@ function MoulinRChatbot() {
   const [currentQuestions, setCurrentQuestions] = useState(() => pickQuestions(new Set(), 6));
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-
+const notionPageIdRef = useRef(null);
 const handleStart = () => {
     const name = nameInput.trim();
     setGuestName(name);
