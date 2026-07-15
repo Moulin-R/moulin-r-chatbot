@@ -273,6 +273,27 @@ const handleStart = () => {
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
       setCurrentQuestions(pickQuestions(newUsed, 6));
       setShowQuickQ(true);
+
+      // 会話ログをNotionに自動保存（裏側で静かに実行。失敗してもチャットは止めない）
+      const turnNumber = newMessages.filter((m) => m.role === "user").length;
+      fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: guestName || "ゲスト",
+          pageId: notionPageIdRef.current,
+          userMessage: trimmed,
+          assistantMessage: reply,
+          turnCount: turnNumber,
+        }),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data && data.pageId) {
+            notionPageIdRef.current = data.pageId;
+          }
+        })
+        .catch(() => {});
     } catch (e) {
       setMessages((prev) => [
         ...prev,
