@@ -5,7 +5,7 @@
 //   NOTION_API_KEY
 //   NOTION_DATA_SOURCE_ID
 
-const NOTION_VERSION = "2025-09-03";
+const NOTION_VERSION = "2022-06-28";
 
 function chunkText(text, size = 1900) {
   const str = String(text ?? "");
@@ -71,7 +71,7 @@ exports.handler = async function (event) {
 
     if (!pageId) {
       const createBody = {
-        parent: { type: "data_source_id", data_source_id: NOTION_DATA_SOURCE_ID },
+        parent: { type: "database_id", database_id: NOTION_DATA_SOURCE_ID },
         properties: {
           お客様名: { title: [{ type: "text", text: { content: name || "ゲスト" } }] },
           日時: { date: { start: new Date().toISOString() } },
