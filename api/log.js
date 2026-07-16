@@ -5,7 +5,7 @@
 //   NOTION_API_KEY      … Notionインテグレーションのシークレット
 //   NOTION_DATA_SOURCE_ID … 会話ログ用データベースのデータソースID
 
-const NOTION_VERSION = "2025-09-03";
+const NOTION_VERSION = "2022-06-28";
 
 function chunkText(text, size = 1900) {
   const str = String(text ?? "");
