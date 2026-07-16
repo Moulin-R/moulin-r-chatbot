@@ -3,7 +3,7 @@
 //
 // 【必要な環境変数】(Vercelの Settings > Environment Variables で設定)
 //   NOTION_API_KEY      … Notionインテグレーションのシークレット
-//   NOTION_DATA_SOURCE_ID … 会話ログ用データベースのデータソースID
+//   NOTION_DATA_SOURCE_ID … 会話ログ用データベースのID（674a5cf7fc674b1e9327a9a0ea45ea15）
 
 const NOTION_VERSION = "2022-06-28";
 
@@ -85,7 +85,7 @@ module.exports = async function handler(req, res) {
 
     if (!pageId) {
       const createBody = {
-        parent: { type: "database_id", database_id: 674a5cf7fc674b1e9327a9a0ea45ea15 },
+        parent: { type: "database_id", database_id: NOTION_DATA_SOURCE_ID },
         properties: {
           お客様名: {
             title: [{ type: "text", text: { content: name || "ゲスト" } }],
