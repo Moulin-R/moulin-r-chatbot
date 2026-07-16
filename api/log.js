@@ -85,7 +85,7 @@ module.exports = async function handler(req, res) {
 
     if (!pageId) {
       const createBody = {
-        parent: { type: "database_id", database_id: NOTION_DATA_SOURCE_ID },
+        parent: { type: "database_id", database_id: 674a5cf7fc674b1e9327a9a0ea45ea15 },
         properties: {
           お客様名: {
             title: [{ type: "text", text: { content: name || "ゲスト" } }],
