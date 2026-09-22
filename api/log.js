@@ -8,7 +8,7 @@
 //
 // 【既存のまま使う環境変数】(変更しない)
 //   NOTION_API_KEY      … 今まで通りのNotion統合キー
-//   NOTION_DATABASE_ID  … 今まで通りのシンプルなデータベースのID
+//   NOTION_DATA_SOURCE_ID … 今まで通りのシンプルなデータベースのID
 //   ANTHROPIC_API_KEY   … Renaの返信にも使っているAnthropicのAPIキー（要約生成にも流用）
 //
 // 【新しく追加する環境変数】
@@ -83,9 +83,9 @@ function buildTurnBlocks(turnCount, userMessage, assistantMessage) {
 // ============================================================
 async function writeLegacyLog({ name, pageId, userMessage, assistantMessage, turnCount, isFinal }) {
   const NOTION_API_KEY = process.env.NOTION_API_KEY;
-  const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
+  const NOTION_DATA_SOURCE_ID = process.env.NOTION_DATA_SOURCE_ID;
 
-  if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
+  if (!NOTION_API_KEY || !NOTION_DATA_SOURCE_ID) {
     return { ok: false, reason: "not_configured" };
   }
 
@@ -98,7 +98,7 @@ async function writeLegacyLog({ name, pageId, userMessage, assistantMessage, tur
   try {
     if (!pageId) {
       const createBody = {
-        parent: { type: "database_id", database_id: NOTION_DATABASE_ID },
+        parent: { type: "database_id", database_id: NOTION_DATA_SOURCE_ID },
         properties: {
           お客様名: { title: [{ type: "text", text: { content: name || "ゲスト" } }] },
           日時: { date: { start: new Date().toISOString() } },
