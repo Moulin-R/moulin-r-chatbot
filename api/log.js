@@ -6,6 +6,8 @@
 // （複数サロンをまとめる14項目のデータベース）へも1行追加で書き込みます。
 // フロントエンド（チャット画面）側の変更は不要です。
 //
+// 【2026-10 追加】お客様が入力した名前を「ご利用者の名前」欄にも記録するようにしました。
+//
 // 【既存のまま使う環境変数】(変更しない)
 //   NOTION_API_KEY      … 今まで通りのNotion統合キー
 //   NOTION_DATA_SOURCE_ID … 今まで通りのシンプルなデータベースのID
@@ -226,7 +228,10 @@ ${assistantMessage}
   }
 }
 
-async function writeHqRow({ sessionId, userMessage, assistantMessage, insights }) {
+// ★変更点1：name（お客様が入力した名前）を受け取れるようにした
+const AGE_OPTIONS = ["10代", "20代", "30代", "40代", "50代", "60代以上"];
+
+async function writeHqRow({ sessionId, name, age, userMessage, assistantMessage, insights }) {
   const apiKey = process.env.NOTION_API_KEY_HQ;
   const databaseId = process.env.NOTION_DATABASE_ID_HQ;
   if (!apiKey || !databaseId) return { ok: false, reason: "not_configured" };
@@ -238,6 +243,8 @@ async function writeHqRow({ sessionId, userMessage, assistantMessage, insights }
       parent: { type: "database_id", database_id: databaseId },
       properties: {
         相談タイトル: { title: [{ type: "text", text: { content: insights.title || "ご相談" } }] },
+        // ★変更点2：「ご利用者の名前」欄に名前を記録（未入力なら"ゲスト"）
+        "ご利用者の名前": { rich_text: toRichText(name || "ゲスト") },
         店舗名: { rich_text: toRichText(salonName) },
         相談日時: { date: { start: new Date().toISOString() } },
         相談カテゴリー: { select: { name: insights.category } },
@@ -252,6 +259,10 @@ async function writeHqRow({ sessionId, userMessage, assistantMessage, insights }
         セッションID: { rich_text: toRichText(sessionId) },
       },
     };
+    // ★変更点4：年代が選ばれていれば「年代」欄にも記録
+    if (AGE_OPTIONS.includes(age)) {
+      body.properties["年代"] = { select: { name: age } };
+    }
     const res = await fetch("https://api.notion.com/v1/pages", {
       method: "POST",
       headers: {
@@ -281,7 +292,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, pageId, userMessage, assistantMessage, turnCount, isFinal } = req.body || {};
+  const { name, age, pageId, userMessage, assistantMessage, turnCount, isFinal } = req.body || {};
 
   // ① 今まで通りの保存（この結果・レスポンス形式は一切変えない）
   const legacyResult = await writeLegacyLog({ name, pageId, userMessage, assistantMessage, turnCount, isFinal });
@@ -293,7 +304,8 @@ module.exports = async function handler(req, res) {
     try {
       const sessionId = legacyResult.pageId || pageId || `no-page-${Date.now()}`;
       const insights = await generateInsights(userMessage, assistantMessage);
-      await writeHqRow({ sessionId, userMessage, assistantMessage, insights });
+      // ★変更点3：nameを渡す
+      await writeHqRow({ sessionId, name, age, userMessage, assistantMessage, insights });
     } catch (err) {
       console.error("HQ write pipeline error:", err);
     }
